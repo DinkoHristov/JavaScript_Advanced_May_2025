@@ -23,3 +23,6 @@ function calculator() {
         }
     }
 } 
+
+let calculate = calculator();
+calculate.init("#num1", "#num2", "#result");
