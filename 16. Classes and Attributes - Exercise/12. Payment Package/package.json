@@ -1,0 +1,16 @@
+{
+  "name": "12.-payment-package",
+  "version": "1.0.0",
+  "main": "12. PaymentPackage.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "chai": "^5.2.0",
+    "mocha": "^11.1.0"
+  }
+}
