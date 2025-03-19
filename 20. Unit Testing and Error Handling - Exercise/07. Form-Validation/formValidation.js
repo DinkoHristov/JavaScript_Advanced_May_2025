@@ -1,65 +1,91 @@
 function validate() {
-    let submitBtn = document.getElementById('submit');
-    let companyCheckBox = document.getElementById('company');
-    submitBtn.addEventListener('click', validateForm);
-    companyCheckBox.addEventListener('change', companyHandler);
+    const usernameRegex = /^[A-Za-z0-9]{3,20}$/;
+    const emailRegex = /^.*@.*\..*$/;
+    const passwordRegex = /^\w{5,15}$/;
 
-    function validateForm(ev) {
-        ev.preventDefault();
-        let usernameInput = document.getElementById('username');
-        let usernameRegex = /^[A-Za-z0-9]{3,20}$/;
-        let usernameIsValid = usernameRegex.test(usernameInput.value);
-        setBorder(usernameInput, usernameIsValid);
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const companyInput = document.getElementById('company');
+    const companyNumberInput = document.getElementById('companyNumber');
 
-        let emailInput = document.getElementById('email');
-        let emailRegex = /^.*@.*\..*$/;
-        let emailIsValid = emailRegex.test(emailInput.value);
-        setBorder(emailInput, emailIsValid);
+    const submitButton = document.getElementById('submit');
+    const validDiv = document.getElementById('valid');
+    const companyInfo = document.getElementById('companyInfo');
 
-        let passwordInput = document.getElementById('password');
-        let confirmPasswordInput = document.getElementById('confirm-password');
-        let passwordRegex = /^\w{5,15}$/;
-        let passwordIsValid = passwordRegex.test(passwordInput.value);
-        let confirmPasswordIsValid = passwordRegex.test(confirmPasswordInput.value);
-        let passwordsAreOk = passwordIsValid && confirmPasswordIsValid && passwordInput.value === confirmPasswordInput.value;
+    companyInput.addEventListener('change', (e) => {
+        companyInfo.style.display = e.target.checked ? 'block' : 'none';
+    });
+    
+    submitButton.addEventListener('click', setInputsBorder);
 
-        setBorder(passwordInput, passwordsAreOk);
-        setBorder(confirmPasswordInput, passwordsAreOk);
+    function setInputsBorder(e) {
+        e.preventDefault();
 
-        let companyNumberIsValid = false;
-        let companyCheckBox = document.getElementById('company');
-
-        if (companyCheckBox.checked) {
-            let companyNumberInput = document.getElementById('companyNumber');
-            if (companyNumberInput.value.trim() !== ''&& !isNaN(companyNumberInput.value)) {
-                let companyNumber = Number(companyNumberInput.value);
-                if (companyNumber >= 1000 && companyNumber <= 9999) {
-                    companyNumberIsValid = true;
-                }
-            }
-
-            setBorder(companyNumberInput, companyNumberIsValid);
+        if (!usernameRegex.test(usernameInput.value)) {
+            usernameInput.style.setProperty('border', '2px solid red');
+        } else {
+            usernameInput.style.setProperty('border', 'none');
         }
 
-        let validDiv = document.getElementById('valid');
-        let mainFieldsValid = usernameIsValid && emailIsValid && passwordsAreOk;
-        let companyInfoIsValid = !companyCheckBox.checked || (companyCheckBox.checked && companyNumberIsValid);
-
-        let allFieldsValid = mainFieldsValid && companyInfoIsValid;
-        validDiv.style.display = allFieldsValid ? 'block' : 'none';
-    }
-
-    function companyHandler(ev) {
-        let companyInfoFieldSet = document.getElementById('companyInfo');
-
-        companyInfoFieldSet.style.display = ev.target.checked ? 'block' : 'none';
-    }
-
-    function setBorder(element, isValid) {
-        if (isValid) {
-            element.style.setProperty('border', 'none');
+        if (!emailRegex.test(emailInput.value)) {
+            emailInput.style.setProperty('border', '2px solid red');
         } else {
-            element.style.setProperty('border', '2px solid red');
+            emailInput.style.setProperty('border', 'none');
+        }
+        
+        let isPasswordsValid = passwordRegex.test(passwordInput.value) &&
+                               passwordRegex.test(confirmPasswordInput.value) &&
+                               passwordInput.value === confirmPasswordInput.value;
+
+        if (!isPasswordsValid) {
+            passwordInput.style.setProperty('border', '2px solid red');
+            confirmPasswordInput.style.setProperty('border', '2px solid red');
+        } else {
+            passwordInput.style.setProperty('border', 'none');
+            confirmPasswordInput.style.setProperty('border', 'none');
+        }
+
+        if (companyInput.checked) {
+            companyInfo.style.setProperty('display', 'block');
+            if (Number(companyNumberInput.value) < 1000 || Number(companyNumberInput.value) > 9999) {
+                companyNumberInput.style.setProperty('border', '2px solid red');
+            } else {
+                companyNumberInput.style.setProperty('border', 'none');
+            }
+        } else {
+            companyNumberInput.style.setProperty('border', 'none');
+            companyInfo.style.setProperty('display', 'none');
+        }
+
+        openOrHideValidDiv();
+    }
+
+    function openOrHideValidDiv() {
+        if (companyInput.checked) {
+            let isFieldsValid = usernameInput.style.getPropertyValue('border') !== '2px solid red' &&
+                                emailInput.style.getPropertyValue('border') !== '2px solid red' &&
+                                passwordInput.style.getPropertyValue('border') !== '2px solid red' &&
+                                confirmPasswordInput.style.getPropertyValue('border') !== '2px solid red' &&
+                                companyNumberInput.style.getPropertyValue('border') !== '2px solid red';
+
+            if (isFieldsValid) {
+                validDiv.style.setProperty('display', 'block');
+            } else {
+                validDiv.style.setProperty('display', 'none');
+            }
+        } else {
+            let isFieldsValid = usernameInput.style.getPropertyValue('border') !== '2px solid red' &&
+                                emailInput.style.getPropertyValue('border') !== '2px solid red' &&
+                                passwordInput.style.getPropertyValue('border') !== '2px solid red' &&
+                                confirmPasswordInput.style.getPropertyValue('border') !== '2px solid red'
+
+            if (isFieldsValid) {
+                validDiv.style.setProperty('display', 'block');
+            } else {
+                validDiv.style.setProperty('display', 'none');
+            }
         }
     }
 }
