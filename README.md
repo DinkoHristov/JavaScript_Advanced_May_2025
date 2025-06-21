@@ -23,3 +23,4 @@ This is a repository with solutions of problems in my SoftUni Course: JS Advance
 21. JS Advanced Regular Exam - 20 October 2024(Practicing)
 22. JS Advanced Retake Exam - 12 August 2024(Practicing)
 23. JS Advanced Regular Exam - 22 June 2024(Practicing)
+24. JS Advanced Regular Exam - 21 June 2025(Real Exam)
